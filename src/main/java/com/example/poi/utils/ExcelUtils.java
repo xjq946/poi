@@ -2,28 +2,29 @@ package com.example.poi.utils;
 
 import com.example.poi.model.User;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.format.CellFormatType;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 public class ExcelUtils {
 
@@ -42,8 +43,19 @@ public class ExcelUtils {
 
     public static final String DOT = ".";
 
+    public static final String READ_METHOD= "readMethod";
 
-    public static List<User> readExcel(String path) throws IOException, IllegalArgumentException {
+    public static final String WRITE_METHOD= "writeMethod";
+
+
+    /**
+     * 读取excel表，封装数据在list集合中
+     * @param path
+     * @return
+     * @throws IOException
+     * @throws IllegalArgumentException
+     */
+    public static <T> List<T> readExcel(String path) throws IOException, IllegalArgumentException {
         if (StringUtils.isBlank(path)) {
             throw new IllegalArgumentException(path + " excel file path is either null or empty");
         } else {
@@ -61,28 +73,39 @@ public class ExcelUtils {
         }
     }
 
-    public static List<User> readXlsx(String path) throws IOException {
-        InputStream is = new FileInputStream(path);
-        XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
-        User user = null;
-        List<User> list = new ArrayList<User>();
-        // Read the Sheet
-        for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
-            XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(numSheet);
-            if (xssfSheet == null) {
-                continue;
-            }
-            // Read the Row
-            for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
-                XSSFRow xssfRow = xssfSheet.getRow(rowNum);
-                if (xssfRow != null) {
-                    user=new User();
-                    setUser(user,xssfRow);
-                    list.add(user);
+    /**
+     * Read the Excel 2007版本及以上
+     * @param path
+     * @param <T>
+     * @return
+     * @throws IOException
+     */
+    public static <T> List<T> readXlsx(String path) throws IOException {
+        try {
+            InputStream is = new FileInputStream(path);
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
+            T obj = null;
+            List<T> list = new ArrayList<>();
+            // Read the Sheet
+            for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
+                XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(numSheet);
+                if (xssfSheet == null) {
+                    continue;
+                }
+                // Read the Row
+                for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
+                    XSSFRow xssfRow = xssfSheet.getRow(rowNum);
+                    if (xssfRow != null) {
+                        obj = (T)Class.forName("com.example.poi.model.User").newInstance();
+                        T result = setObject(obj, xssfRow, xssfSheet);
+                        list.add(result);
+                    }
                 }
             }
+            return list;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return list;
     }
 
     /**
@@ -91,30 +114,39 @@ public class ExcelUtils {
      * @return
      * @throws IOException
      */
-    public static  List<User> readXls(String path) throws IOException {
-        InputStream is = new FileInputStream(path);
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
-        User user = null;
-        List<User> list = new ArrayList<User>();
-        // Read the Sheet
-        for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
-            HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
-            if (hssfSheet == null) {
-                continue;
-            }
-            // Read the Row
-            for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
-                HSSFRow hssfRow = hssfSheet.getRow(rowNum);
-                if (hssfRow != null) {
-                    user=new User();
-                    setUser(user,hssfRow);
-                    list.add(user);
+    public static <T> List<T> readXls(String path) throws IOException {
+        try {
+            InputStream is = new FileInputStream(path);
+            HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
+            T obj = null;
+            List<T> list = new ArrayList<>();
+            // Read the Sheet
+            for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
+                HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
+                if (hssfSheet == null) {
+                    continue;
+                }
+                // Read the Row
+                for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+                    HSSFRow hssfRow = hssfSheet.getRow(rowNum);
+                    if (hssfRow != null) {
+                        obj = (T)Class.forName("com.example.poi.model.User").newInstance();
+                        T result = setObject(obj, hssfRow, hssfSheet);
+                        list.add(result);
+                    }
                 }
             }
+            return list;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return list;
     }
 
+    /**
+     * 获取excel表的文件类型，如xls、xlsx
+     * @param path
+     * @return
+     */
     public static String getSuffix(String path) {
         if(StringUtils.isBlank(path)){
             return EMPTY;
@@ -126,21 +158,98 @@ public class ExcelUtils {
         return path.substring(index + 1, path.length());
     }
 
-    public static void setUser(User user, Row row){
-        user.setId((int)Float.parseFloat(getValue(row.getCell(0))));
-        user.setName(row.getCell(1).getStringCellValue());
-        user.setAge(getValue(row.getCell(2)).substring(0,getValue(row.getCell(2)).lastIndexOf(".")));
 
+    /**
+     * 上传时为对象赋值
+     * @param obj
+     * @param row
+     * @param sheet
+     * @param <T>
+     * @return
+     */
+    public static <T> T setObject(T obj,Row row,Sheet sheet){
         try {
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
-            Date date = row.getCell(3).getDateCellValue();
-            user.setBirthday(new java.sql.Date(date.getTime()));
+            List<String> properties = getFirstRow(sheet);
+            Map<String, Map<String, Method>> allMethodMap = getMethod(obj.getClass());
+            Map<String, Method> writeMethodMap = allMethodMap.get(WRITE_METHOD);
+            for(int colNum=0;colNum<properties.size();colNum++){
+                Method method = writeMethodMap.get(properties.get(colNum));
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                String simpleName = parameterTypes[0].getSimpleName();
+                Cell cell = row.getCell(colNum);
+                if(simpleName.equals("Date")){
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
+                    String dateStr = cell.getStringCellValue();
+                    Date date = sdf.parse(dateStr);
+                    java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+                    method.invoke(obj,sqlDate);
+                }else if(simpleName.equals("String")){
+                    method.invoke(obj,cell.getStringCellValue());
+                }else if(simpleName.equals("Boolean")){
+                    method.invoke(obj,Boolean.parseBoolean(cell.getStringCellValue()));
+                }else if(simpleName.equals("Integer")){
+                    method.invoke(obj,Integer.parseInt(cell.getStringCellValue()));
+                }else if(simpleName.equals("Long")){
+                    method.invoke(obj,Long.parseLong(cell.getStringCellValue()));
+                }else{
+                    method.invoke(obj,Double.parseDouble(cell.getStringCellValue()));
+                }
+            }
+            return obj;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
     }
 
+    /**
+     * 下载时为单元格赋值
+     * @param obj
+     * @param row
+     * @param sheet
+     * @param <T>
+     */
+    public static <T> void setCellData(T obj,Row row,Sheet sheet){
+        try {
+            List<String> properties = getFirstRow(sheet);
+            Map<String, Map<String, Method>> allMethodMap = getMethod(obj.getClass());
+            Map<String, Method> readMethodMap = allMethodMap.get(READ_METHOD);
+            for(int colNum=0;colNum<properties.size();colNum++){
+                Method method = readMethodMap.get(properties.get(colNum));
+                Class<?> returnType = method.getReturnType();
+                String simpleName = returnType.getSimpleName();
+                Cell cell = row.createCell(colNum);
+                if(simpleName.equals("Date")){
+                    java.sql.Date date = (java.sql.Date)method.invoke(obj);
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                    String format = sdf.format(date);
+                    cell.setCellValue(format);
+                }else if(simpleName.equals("String")){
+                    String str= (String)method.invoke(obj);
+                    cell.setCellValue(str);
+                }else if(simpleName.equals("Boolean")){
+                    Boolean b= (Boolean)method.invoke(obj);
+                    cell.setCellValue(b);
+                }else if(simpleName.equals("Integer")){
+                    Integer i = (Integer)method.invoke(obj);
+                    cell.setCellValue(i);
+                }else if(simpleName.equals("Long")){
+                    Long aLong = (Long)method.invoke(obj);
+                    cell.setCellValue(aLong);
+                }else{
+                    Double aDouble = (Double)method.invoke(obj);
+                    cell.setCellValue(aDouble);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 将单元格的数据类型的值全部转换为字符串输出
+     * @param cell
+     * @return
+     */
     private static String getValue(Cell cell) {
         if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
             return String.valueOf(cell.getBooleanCellValue());
@@ -151,6 +260,12 @@ public class ExcelUtils {
         }
     }
 
+    /**
+     * 下载，设置响应头
+     * @param fileName
+     * @param response
+     * @param workbook
+     */
     public static void downLoadExcel(String fileName, HttpServletResponse response, Workbook workbook) {
         try {
             response.setCharacterEncoding("UTF-8");
@@ -162,4 +277,72 @@ public class ExcelUtils {
         }
     }
 
+    /**
+     * 获取对象的所有属性，暂未使用
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static <T> Map<String,String> getAllProperties(Class<T> clazz){
+        try {
+            BeanInfo beanInfo= Introspector.getBeanInfo(clazz);
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            Map<String,String> propertyMap=new LinkedHashMap<>();
+            if(Objects.nonNull(propertyDescriptors)&& propertyDescriptors.length>0){
+                for(PropertyDescriptor propertyDescriptor:propertyDescriptors){
+                    String name = propertyDescriptor.getName();
+                    propertyMap.put(name,name);
+                }
+            }
+            return propertyMap;
+        } catch (IntrospectionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 利用内省获取类中的读写方法
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static <T> Map<String,Map<String,Method>> getMethod(Class<T> clazz){
+        try {
+            BeanInfo beanInfo= Introspector.getBeanInfo(clazz);
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            Map<String,Map<String,Method>> allMethodMap=new LinkedHashMap<>();
+            Map<String,Method> writeMethodMap=new LinkedHashMap<>();
+            Map<String,Method> readMethodMap=new LinkedHashMap<>();
+            if(Objects.nonNull(propertyDescriptors)&& propertyDescriptors.length>0){
+                for(PropertyDescriptor propertyDescriptor:propertyDescriptors){
+                    String name = propertyDescriptor.getName();
+                    writeMethodMap.put(name,propertyDescriptor.getWriteMethod());
+                    readMethodMap.put(name,propertyDescriptor.getReadMethod());
+                }
+            }
+            allMethodMap.put(WRITE_METHOD,writeMethodMap);
+            allMethodMap.put(READ_METHOD,readMethodMap);
+            return allMethodMap;
+        } catch (IntrospectionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 获取excel表的第一行
+     * @param sheet
+     * @return
+     */
+    public static List<String> getFirstRow(Sheet sheet) {
+        List<String> properties=new ArrayList<>();
+        Row row = sheet.getRow(0);
+        if(Objects.nonNull(row)){
+            for(int colNum=0;colNum<row.getPhysicalNumberOfCells();colNum++){
+                Cell cell = row.getCell(colNum);
+                String value = getValue(cell);
+                properties.add(value);
+            }
+        }
+        return properties;
+    }
 }

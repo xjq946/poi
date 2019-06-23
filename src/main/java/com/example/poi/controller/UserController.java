@@ -3,20 +3,14 @@ package com.example.poi.controller;
 import com.example.poi.model.User;
 import com.example.poi.service.UserService;
 import com.example.poi.utils.ExcelUtils;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpRequest;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -73,7 +67,7 @@ public class UserController {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             if(bos!=null){
                 try {
@@ -106,10 +100,7 @@ public class UserController {
             if(Objects.nonNull(userList)&& !CollectionUtils.isEmpty(userList)){
               for(int i=0;i<userList.size();i++){
                   Row row = sheet.createRow(i+1);
-                  row.createCell(0).setCellValue(userList.get(i).getId());
-                  row.createCell(1).setCellValue(userList.get(i).getName());
-                  row.createCell(2).setCellValue(userList.get(i).getAge());
-                  row.createCell(3).setCellValue(userList.get(i).getBirthday());
+                  ExcelUtils.setCellData(userList.get(i),row,sheet);
               }
             }
             //下载
