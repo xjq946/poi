@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.poi.mapper.UserMapper">
+    <!--查询所有用户-->
+    <select id="listUser"  resultType="com.example.poi.model.User">
+        SELECT id,name,age,birthday FROM stu;
+    </select>
+
+    <!--根据id查询用户-->
+    <select id="findById" parameterType="_int">
+        select id,name,age,birthday from stu where id=#{id};
+    </select>
+
+    <!--添加用户-->
+    <insert id="addUser" parameterType="com.example.poi.model.User">
+        insert into stu(name,age,birthday) values(#{name},#{age},#{birthday});
+    </insert>
+
+</mapper>
