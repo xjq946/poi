@@ -28,6 +28,8 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2200">
               <caret line="113" column="1" selection-start-line="113" selection-start-column="1" selection-end-line="113" selection-end-column="1" />
+<<<<<<< HEAD
+=======
             </state>
           </provider>
         </entry>
@@ -36,7 +38,29 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/poi/POITest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="264">
+              <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+>>>>>>> feature
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/example/poi/POITest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="141">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Master.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="264">
               <caret line="12" selection-start-line="12" selection-end-line="12" />
+              <folding>
+                <element signature="e#176#177#0" expanded="true" />
+                <element signature="e#220#221#0" expanded="true" />
+              </folding>
+>>>>>>> feature
             </state>
           </provider>
         </entry>
@@ -67,7 +91,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+<<<<<<< HEAD
+        <entry key="$PROJECT_DIR$" value="feature" />
+=======
         <entry key="$PROJECT_DIR$" value="test" />
+>>>>>>> feature
       </map>
     </option>
   </component>
@@ -147,8 +175,19 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+<<<<<<< HEAD
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562948204348" />
+=======
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562955075859" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+>>>>>>> feature
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -231,12 +270,20 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="816000" />
+=======
     <option name="totallyTimeSpent" value="8411000" />
+>>>>>>> feature
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
+<<<<<<< HEAD
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17091152" />
+=======
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17091152" />
+>>>>>>> feature
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="JRebel" order="3" side_tool="true" />
@@ -277,6 +324,11 @@
       <window_info anchor="right" id="Bean Validation" order="10" />
     </layout>
   </component>
+<<<<<<< HEAD
+=======
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -309,6 +361,16 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="添加文件" />
+    <MESSAGE value="再次添加文件" />
+    <MESSAGE value="修改POITest" />
+    <MESSAGE value="添加MyWork" />
+    <MESSAGE value="修改MyWork：update mywork" />
+    <MESSAGE value="添加Master:master" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加Master:master" />
+  </component>
+>>>>>>> feature
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -322,6 +384,16 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/main/java/Master.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding>
+            <element signature="e#176#177#0" expanded="true" />
+            <element signature="e#220#221#0" expanded="true" />
+          </folding>
+=======
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/poi/MyWork.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
@@ -333,21 +405,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1628">
+          <caret line="74" column="34" selection-start-line="74" selection-start-column="34" selection-end-line="74" selection-end-column="34" />
+        </state>
+      </provider>
+      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/poi/controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2200">
           <caret line="113" column="1" selection-start-line="113" selection-start-column="1" selection-end-line="113" selection-end-column="1" />
+>>>>>>> feature
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/poi/POITest.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="141">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+=======
+        <state relative-caret-position="264">
+          <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Master.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#176#177#0" expanded="true" />
+            <element signature="e#220#221#0" expanded="true" />
           </folding>
+>>>>>>> feature
         </state>
       </provider>
     </entry>
@@ -358,5 +451,9 @@
           <folding>
             <element signature="e#202#203#0" expanded="true" />
             <element signature="e#238#239#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
