@@ -155,7 +155,7 @@ public class ExcelUtils {
         if (index == -1) {
             return EMPTY;
         }
-        return path.substring(index + 1);
+        return path.substring(index + 1, path.length());
     }
 
 
