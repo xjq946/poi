@@ -8,4 +8,7 @@ package com.example.poi;
  * @create 2019/7/14 0:12
  */
 public class B {
+    public static void main(String[] args) {
+        System.out.println("B");
+    }
 }
